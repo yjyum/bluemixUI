@@ -13,6 +13,13 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load("visualization", "1.1", {packages:["corechart"]});
+  window.onload = function() {
+    result = JSON.parse(sessionStorage.getItem('movieResult')); 
+    sessionStorage.removeItem('movieResult'); 
+    if (result != null) {
+      handleSubmitMovie(1);
+    }
+  };
 </script>
 </head>
 <body>
@@ -67,7 +74,7 @@
         <div class="gadget">
           <h2 class="star">Personality</h2>
           <ul class="sb_menu">
-            <li><a href="movie.html">Input your facebook account and interested movie to find your sentiment</a></li>
+            <li><a href="#">Input your facebook account and interested movie to find your sentiment</a></li>
             <div id="personality"></div>
           </ul>
           <div class="clr"></div>

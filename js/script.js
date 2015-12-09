@@ -310,19 +310,19 @@ var layoutMovies = function() {
 
 	for (var i = 0; i < result.rc.length; ++i) {
 		var movie = result.rc[i];
-		  	var name = movie.name;
-			var imageurl = movie.imageurl;
-			var runtime = movie.runtime;
-			var date = movie.rlsdate;
-			var summary = movie.summary;
-			var genre = movie.genre;
-			var score = movie.avguserscore;
+		var name = movie.name;
+		var imageurl = movie.imageurl;
+		var runtime = movie.runtime;
+		var date = movie.rlsdate;
+		var summary = movie.summary;
+		var genre = movie.genre;
+		var score = movie.avguserscore;
 
 		htmlText += '<div class="article"><h2><span>' + name + '</span></h2>' 
 				+ '<p class="infopost">' + runtime + ' | ' +  genre + ' | <span class="date"> ' + date + '</span> <a class="com">Rating <span>' + score + '</span></a></p><div class="clr"></div>' 
 				+ '<div class="img"><img src="' + imageurl + '" width="200" height="278" alt="" class="fl" /></div>'
 				+ '<div class="post_content"><p>' + summary + '</p>' + '<div id="sentiment' + i + '" style="width: 410px; height: 280px;"></div></div>'
-				+ '<div class="clr"></div><p class="spec"><a href="movie.html" class="rm">Read more</a></p><div class="clr"></div></div>';
+				+ '<div class="clr"></div><p class="spec"><a href="movie.html" class="rm" onclick="readMore(' + i +')">Read more</a></p><div class="clr"></div></div>';
     }
     return htmlText;
 }
@@ -352,6 +352,10 @@ var createChart = function(jsondata, id, title) {
 
     var chart = new google.visualization.PieChart(document.getElementById(id));
     chart.draw(data, options);
+}
+
+function readMore(movieId) {
+	sessionStorage.setItem('movieResult', JSON.stringify(result.rc[movieId]));
 }
 
 // TO DO
