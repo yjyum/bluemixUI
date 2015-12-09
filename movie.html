@@ -14,24 +14,6 @@
 <script type="text/javascript">
   google.load("visualization", "1.1", {packages:["corechart"]});
 </script>
-<script type="text/javascript">
-function clickPage(elem) {
-    if ( event.target.nodeName != 'SPAN' ) {
-      var value = $('.pages span').text();
-      $('.pages span').replaceWith(function(){
-        return '<a href="#" onclick="myFunction(this)">' + value + '</a>';
-      });
-
-      var value = $(elem).text();
-      $(elem).replaceWith(function() {
-        return $('<span onclick="myFunction(this)">' + value + '</span>');
-      });
-
-      console.log(value);
-    }
-  return false;
-}  
-</script>
 </head>
 <body>
 <div class="main">

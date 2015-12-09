@@ -1,4 +1,5 @@
 var result = null;
+var reviewperpage = 2;
 
 // TO DO
 function submitMood() {
@@ -484,26 +485,28 @@ function submitMovie() {
 		                "trust": 0.12306629390404575
 		            }
 		        };
-    		handleSubmitMovie();
+    		handleSubmitMovie(1);
     	}
   	});
 }
 
-function handleSubmitMovie() {
+function handleSubmitMovie(pagenum) {
 	console.log(result);
 
 	var $reviewSec = $("#reviewSec");
 	var htmlText = "";
 	htmlText = '<div class="article"><p><h2><span>Sentiment for Movie "' + result.name + '"</span></h2></p><div id="sentiment"></div>'
 		+ '<div><p></p><p></p><h2><span>Reviews for Movie "' + result.name + '"</h2><div class="clr"></div></div>'
-		+ layoutReviews()
-		+ '<p class="pages"><span onclick="clickPage(this)">1</span><a href="#" onclick="clickPage(this)">2</a><a href="#" onclick="clickPage(this)">3</a></p>'
+		+ layoutReviews(pagenum)
+		+ layoutPages(pagenum)
 		+ '</div>';
 	$reviewSec.html(htmlText);
 
 	createChart(result.user_emotions, "sentiment", null);
 
-	for (var i = 0; i < result.reviews.length; ++i) {
+	var rangemin = (pagenum-1) * reviewperpage;
+	var rangemax = rangemin + reviewperpage;
+	for (var i = rangemin; i < rangemax && i < result.reviews.length; i++) {
     	createChart(result.reviews[i].personality, "reviewpersonality" + i, "User Personality");
     	createChart(result.reviews[i].emotions, "review" + i, 'User Sentiment for "' + result.name + '"');
     }
@@ -511,10 +514,12 @@ function handleSubmitMovie() {
     createChart(result.user_personality, "personality", null);
 }
 
-var layoutReviews = function() {
+var layoutReviews = function(pagenum) {
 	var htmlText = "";
 
-	for (var i = 0; i < result.reviews.length; ++i) {
+	var rangemin = (pagenum-1) * reviewperpage;
+	var rangemax = rangemin + reviewperpage;
+	for (var i = rangemin; i < rangemax && i < result.reviews.length; i++) {
 		var name = result.reviews[i].name;
 		var date = result.reviews[i].date;
 		var review = result.reviews[i].review;
@@ -525,6 +530,25 @@ var layoutReviews = function() {
             	+ '<div style="clear: both;"></div></div>';
     }
     return htmlText;
+}
+
+var layoutPages = function(pagenum) {
+	var maxPage = result.reviews.length / reviewperpage;
+	if (result.reviews.length % reviewperpage != 0) {
+		maxPage++;
+	}
+
+	var htmlText = '<p class="pages">';
+	for (var i = 1; i <= maxPage; i++) {
+		if (pagenum == i) {
+			htmlText += '<span id="p' + i + '" onclick="handleSubmitMovie(' + i + ')">' + i + '</span>';
+		} else {
+			htmlText += '<a href="#" id="p' + i + '" onclick="handleSubmitMovie(' + i + ')">' + i + '</a>';
+		}
+	}
+	htmlText += '</p>';
+
+	return htmlText;
 }
 
 // <![CDATA[
